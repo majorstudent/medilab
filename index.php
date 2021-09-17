@@ -327,14 +327,14 @@
           </div>
           <div class="row">
             <div class="col-md-4 form-group mt-3">
-              <input type="datetime" name="date" class="form-control datepicker" id="date" placeholder="Appointment Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              <input type="date" name="date" class="form-control datepicker" id="date" placeholder="Appointment Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group mt-3">
               <select name="department" id="department" class="form-select">
                 <option value="">Select Department</option>
                 <option type="radio" value="Department 1">Surgery</option>
-                <option type="radio" value="Department 2">Department 2</option>
+                <option type="radio" value="Department 2remo">Department 2</option>
                 <option type="radio" value="Department 3">Department 3</option>
               </select>
               <div class="validate"></div>
@@ -359,47 +359,69 @@
             <div class="error-message"></div>
             <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
           </div>
-          <div class="text-center"><button type="submit">Make an Appointment</button></div>
+          <div><button type="submit">Make an Appointment</button></div>
         </form>
-<?<?php
+<?php
 //            Database Connection
           $servername = "localhost";
           $username = "root";
           $password = "";
 
-          $new_connection = new mysqli($servername, $username, $password,);
+
+          $new_connection = new mysqli($servername, $username, $password, "myDatabase");
 
           if($new_connection->connect_error){
-              die("Connection failed: " . $new_connection->connect_error );
+              echo "Error connecting: ". $new_connection->connect_error;
+          } else{
+              echo "Connected Successfully<br>";
           }
-          echo "Connected Succesfully<br>";
-          $name = $_POST['name'];
-        $email = $_POST['email'];
-        $phone = $_POST['phone'];
-        $date = $_POST['date'];
-//$department
-        $department = $_POST['department'];
-        $doctor = $_POST['doctor'];
-        $message = $_POST['message'];
+//          Create Database
+//    $sql = "CREATE DATABASE myDatabase";
+//    if($new_connection->query($sql)) {
+//        echo "Database Created Successfully<br>";
+//    } else {
+//        echo "Error connecting: " . $new_connection->error . "<br>";
+//    }
 
 
-
-$query = mysqli_query($new_connection, "INSERT INTO Clients (name, email, phone, date, department, doctor, message) VALUES (
- $name, $email, $phone, $date, $department, $doctor, $message                                                            
-)");
-
-// IF USER INSERTED
-if ($query) {
-    return true;
-}
-return 'Opps something is going wrong!';
+//    Create Table
+//    $sql = "CREATE TABLE Clients (
+//    name VARCHAR (50)  NOT NULL,
+//    email VARCHAR (50) NOT NULL,
+//    phone INT (15) NOT NULL,
+//    date TIMESTAMP,
+//    department VARCHAR (50) NOT NULL,
+//    doctor VARCHAR (50) NOT NULL,
+//    message TEXT (255)
+//)";
 
 //if ($new_connection->query($sql) === TRUE) {
-//  echo "New record created successfully";
+//    echo "Table Clients created successfully";
 //} else {
-//  echo "Error: " . $sql . "<br>" . $new_connection->error;
+//    echo "Error creating table: " . $new_connection->error;
 //}
+
+$name = $_POST['name'];
+$email = $_POST['email'];
+$phone = (int) $_POST['phone'];
+//$date = $_POST['date'];
+$department = $_POST['department'];
+$doctor = $_POST['doctor'];
+$message = $_POST['message'];
+
+$sql = "INSERT INTO Clients(name, email, phone, department, doctor, message)
+        VALUES ('".$name."', '".$email."', '".$phone."', '".$department."', '".$doctor."', '".$message."') ";
+
+    //'".$username."'
+
+if (mysqli_query($new_connection, $sql)) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($new_connection);
+}
+
 ?>
+
       </div>
     </section><!-- End Appointment Section -->
 

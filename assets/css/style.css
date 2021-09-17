@@ -1404,7 +1404,7 @@ section {
   background-color: #1977cc;
 }
 
-@media (max-width: 767px) {
+@media (max-width: /opt/lampp/htdocs/Medilab767px) {
   .testimonials .testimonial-wrap {
     padding-left: 0;
   }
